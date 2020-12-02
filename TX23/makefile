@@ -7,24 +7,26 @@
 # 
 ##########################################################################
 
+CFLAGS += -O0 -g
+
 all : readTX23 libTX23.so
 
 clean :
-	rm *.o readTX23 libTX23.so
+	$(RM) *.o readTX23 libTX23.so *~
 
 readTX23 : RPi_TX23.o readTX23.o
-	gcc -o readTX23 RPi_TX23.o readTX23.o -lbcm2835 -lrt
+	$(CC) $(CFLAGS) -o readTX23 RPi_TX23.o readTX23.o -lbcm2835 -lrt
 
 libTX23.so : libTX23.o RPi_TX23.o 
-	gcc --shared -o libTX23.so libTX23.o RPi_TX23.o -lbcm2835 -lrt
+	$(CC) $(CFLAGS) --shared -o libTX23.so libTX23.o RPi_TX23.o -lbcm2835 -lrt
 
 # The next lines generate the various object files
 
 libTX23.o : libTX23.c  RPi_TX23.c RPi_TX23.h
-	gcc -c libTX23.c
+	$(CC) $(CFLAGS) -c libTX23.c
      
 RPi_TX23.o : RPi_TX23.c RPi_TX23.h
-	gcc -c RPi_TX23.c
+	$(CC) $(CFLAGS) -c RPi_TX23.c
 
 readTX23.o : readTX23.c RPi_TX23.h
-	gcc -c readTX23.c
+	$(CC) $(CFLAGS) -c readTX23.c
